@@ -1,0 +1,134 @@
+<!--
+ Use this page for debugging purposes.
+
+ Editor Tools are loaded as git-submodules.
+ You can pull modules by running `yarn pull_tools` and start experimenting.
+ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Editor.js 🤩🧦🤨 example</title>
+  <link href="https://fonts.googleapis.com/css?family=PT+Mono" rel="stylesheet">
+  <link href="assets/demo.css" rel="stylesheet">
+  <script src="assets/json-preview.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+</head>
+<body>
+  <div class="ce-example">
+    <div class="ce-example__header">
+      <a class="ce-example__header-logo" href="https://codex.so/editor">Editor.js 🤩🧦🤨</a>
+
+      <div class="ce-example__header-menu">
+        <a href="https://github.com/editor-js" target="_blank">Plugins</a>
+        <a href="https://editorjs.io/usage" target="_blank">Usage</a>
+        <a href="https://editorjs.io/configuration" target="_blank">Configuration</a>
+        <a href="https://editorjs.io/creating-a-block-tool" target="_blank">API</a>
+      </div>
+    </div>
+    <div class="ce-example__content _ce-example__content--small">
+      <div id="editorjs"></div>
+      <div id="hint" style="text-align: center;">
+        No submodules found. Run <code class="inline-code">yarn pull_tools</code>
+      </div>
+      <div class="ce-example__button" id="saveButton">
+        editor.save()
+      </div>
+    </div>
+    <div class="ce-example__output">
+      <pre class="ce-example__output-content" id="output"></pre>
+
+      <div class="ce-example__output-footer">
+        <a href="https://codex.so" style="font-weight: bold;">Made by CodeX</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load Tools -->
+  <!--
+   You can upload Tools to your project's directory and use as in example below.
+
+   Also you can load each Tool from CDN or use NPM/Yarn packages.
+
+   Read more in Tool's README file. For example:
+   https://github.com/editor-js/header#installation
+   -->
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest/dist/editor.min.js"></script>
+  <script src="../dist/bundle.js" onload="document.getElementById('hint').hidden = true"></script><!-- Header -->
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/list@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/checklist@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/raw"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/embed@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/quote@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/table@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/code@latest"></script>
+
+  <!-- Initialization -->
+  <script>
+    const saveButton = document.getElementById('saveButton');
+
+    var editor = new EditorJS({
+      holder: 'editorjs',
+
+      tools: {
+        embed: {
+          class: Embed,
+          inlineToolbar: true,
+        },
+        quote: {
+          class: Quote,
+          inlineToolbar: true,
+        },
+        table: {
+          class: Table,
+          inlineToolbar: true,
+        },
+        code: {
+          class: CodeTool,
+          inlineToolbar: true,
+        },
+        raw: {
+          class: RawTool,
+          inlineToolbar: true,
+        },
+        checklist: {
+          class: Checklist,
+          inlineToolbar: true,
+        },
+        list: {
+          class: List,
+          inlineToolbar: true,
+        },
+
+        colorTune: {
+          class: ColorTune.default,
+          config: {
+            colorOpacity: 0.8,
+            colors: [
+              {key: null, label: 'Transparent'},
+              {key: 'dark', label: 'Dark', color: '#222222'},
+              {key: 'gray', label: 'Gray', color: '#999999'},
+              {key: 'gray-light', label: 'Light Gray', color: '#F0F0F0'},
+              {key: 'green', label: 'Green', color: '#1DCA6C'},
+              {key: 'green-light', label: 'Light Green', color: '#BBEFD3'},
+            ]
+          }
+        },
+      },
+      tunes: ['colorTune'],
+
+      data: {},
+
+      onReady: function(){
+        saveButton.click();
+      },
+    });
+
+    saveButton.addEventListener('click', function () {
+      editor.save().then((savedData) => {
+        cPreview.show(savedData, document.getElementById("output"));
+      });
+    });
+  </script>
+</body>
+</html>
