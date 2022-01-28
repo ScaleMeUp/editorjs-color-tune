@@ -82,7 +82,7 @@ class ColorTune {
         });
 
         select.addEventListener('change', (e) => {
-            this.data.color = e.target.value;
+            this.data.color = !['null', 'none'].includes(e.target.value) ? e.target.value: null;
 
             this._applySelectedColor();
         });
